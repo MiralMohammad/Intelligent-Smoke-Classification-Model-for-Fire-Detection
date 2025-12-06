@@ -1,4 +1,4 @@
-# Intelligent-Smoke-Detection-System-for-Fire-Safety
+# Intelligent-Smoke-Classification-Model-for-Fire-Detection-Using-IoT-Sensor-Data
 
 This project builds a machine learning–based smoke classification model that helps fire safety systems decide whether a detected smoke event is likely to be caused by a real fire or by non-fire sources (e.g., cooking, cigarettes, steam).  
 The goal is to support smarter fire alarms by reducing unnecessary alarm activations.
