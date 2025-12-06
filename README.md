@@ -1,88 +1,59 @@
 # Intelligent-Smoke-Classification-Model-for-Fire-Detection-Using-IoT-Sensor-Data
 
-This project builds a machine learning–based smoke classification model that helps fire safety systems decide whether a detected smoke event is likely to be caused by a real fire or by non-fire sources (e.g., cooking, cigarettes, steam).  
-The goal is to support smarter fire alarms by reducing unnecessary alarm activations.
+This project implements a machine-learning model that classifies smoke events as either fire-related or non-fire (e.g., cooking, cigarettes, steam).  
+I developed this system to support smarter, more reliable fire alarms by minimizing unnecessary alarm activations.
 
 ---
 
 ## 🚨 Problem Statement
 
-Traditional smoke detectors typically trigger an alarm whenever smoke exceeds a fixed threshold, regardless of its source. This often leads to false alarms in everyday situations and can reduce user trust in alarm systems.
+Traditional smoke detectors trigger alarms based solely on smoke intensity, which leads to frequent false alarms in everyday situations. This reduces user trust and can delay responses to real fire events.
 
-In this project, we formulate the task as a **binary classification problem**, where the target column is:
+In this project, I treat the task as a **binary classification problem**:
 
-- `Fire Alarm` = 1 → fire-related smoke  
-- `Fire Alarm` = 0 → non-fire / nuisance smoke  
+- `Fire Alarm = 1` → fire-related smoke  
+- `Fire Alarm = 0` → nuisance / non-fire smoke  
 
-Our primary objective is to **reduce false positives (false alarms)** by training a model that only raises an alarm when a true fire event is likely.
+My primary objective is to **reduce false positives**, ensuring that the system triggers an alarm only when a real fire is likely.
 
 ---
 
 ## 🗂 Dataset
 
-- **Source:** Smoke Detection Dataset (Kaggle – IoT sensor-based)
-- **Samples:** ~60,000 readings collected at 1 Hz
-- **Type:** Tabular sensor data
-- **Target column:** `Fire Alarm` (binary)
+- **Source:** Smoke Detection Dataset (Kaggle – IoT sensor-based)  
+- **Size:** ~60,000 readings (1 Hz sampling)  
+- **Target column:** `Fire Alarm`  
 
-Key features include:
-- `Temperature[C]` – Air temperature  
-- `Humidity[%]` – Air humidity  
-- `TVOC[ppb]` – Total volatile organic compounds  
-- `eCO2[ppm]` – CO₂ equivalent  
-- `Raw H2`, `Raw Ethanol` – raw gas sensor outputs  
-- `Pressure[hPa]` – Air pressure  
-- `PM1.0` and related particulate measurements  
-
-The data was collected in multiple environments (indoor/outdoor, wood/gas fires, grills, normal conditions, high humidity, etc.), making it suitable for learning diverse smoke patterns.
+Key features include temperature, humidity, TVOC, eCO₂, raw gas outputs (H₂, Ethanol), air pressure, and particulate matter (PM1.0).  
+The dataset covers a variety of indoor and outdoor conditions, including controlled fire scenarios and nuisance smoke environments.
 
 ---
 
 ## 🧹 Preprocessing & Handling Imbalance
 
-1. **Train–test split:**  
-   - `train_test_split` with an 80/20 split  
-   - `stratify=y` to preserve the original class distribution
-
-2. **Class imbalance:**  
-   - EDA showed a clear imbalance in `Fire Alarm`  
-   - Majority class ≈ 73.6%, minority ≈ 26.4%  
-   - We experimented with **SMOTE** to oversample the minority class and compared models trained on:
-     - original data  
-     - SMOTE-balanced data  
-
-3. **Feature scaling:**  
-   - `StandardScaler` fitted on the training data  
-   - Applied to train, SMOTE-train, and test sets.
+- Stratified 80/20 train–test split  
+- Clear imbalance detected (≈ 73.6% class 1, 26.4% class 0)  
+- Applied **SMOTE** to oversample the minority class and compared results with the original data  
+- Scaled all features using **StandardScaler**
 
 ---
 
 ## 🤖 Model & Hyperparameter Tuning
 
-The main model is **AdaBoostClassifier** with a shallow **Decision Tree** as the base estimator.
+I used **AdaBoostClassifier** with a shallow Decision Tree as the base estimator.  
+AdaBoost trains weak learners sequentially, giving more weight to previously misclassified samples. This makes it effective for datasets where fire and non-fire smoke patterns overlap.
 
-AdaBoost trains multiple weak learners sequentially; each new tree focuses more on samples that were misclassified previously. Misclassified instances receive higher weights, and the final prediction is obtained through a weighted combination of all weak learners.  
-This adaptive mechanism makes AdaBoost suitable for our sensor data, where fire and non-fire smoke can have overlapping patterns.
-
-Hyperparameters were tuned using **RandomizedSearchCV**, optimizing:
-
-- `n_estimators`  
-- `learning_rate`  
-- `estimator__max_depth` (depth of the base decision tree)
-
-We used **precision** as the scoring metric to directly align with the goal of reducing false positives.
-
-Best configuration:
+Hyperparameter tuning was performed using **RandomizedSearchCV**, optimizing:
 
 - `n_estimators = 200`  
 - `learning_rate = 0.01`  
-- `max_depth = 1` (decision stump)
+- `max_depth = 1`  
+
+Precision was used as the scoring metric to directly support the goal of reducing false alarms.
 
 ---
 
-## 📊 Results (Original Data, Tuned Model)
-
-On the test set (original data):
+## 📊 Results (Tuned Model – Original Data)
 
 - **Accuracy:** 0.9895  
 - **Precision:** 1.0000  
@@ -90,20 +61,30 @@ On the test set (original data):
 - **F1-score:** 0.9928  
 - **AUC:** 0.99  
 
-Best overall performance comes from the original data after tuning, where the model achieved the highest precision with a high F1 score.  
-We selected this model because our primary objective is to reduce false alarms. Higher precision directly corresponds to fewer false positives, which aligns with the goal of ensuring that the system triggers an alarm only when a true fire event is likely.
+The tuned model trained on the original data achieved the strongest overall performance.  
+I selected this model because its **perfect precision** directly translates to **fewer false positives**, aligning with the project’s main objective of minimizing unnecessary alarm activations.
 
 ---
 
 ## 🧪 Files
 
-- `smoke_detection_model.ipynb` – Full notebook: EDA, preprocessing, model training, tuning, and evaluation.
+- `smoke_detection_model.ipynb` — full workflow: EDA, preprocessing, modeling, tuning, evaluation
+
+---
+
+## 🔧 Tech Stack
+
+- Python  
+- Scikit-learn  
+- Imbalanced-learn  
+- Pandas / NumPy  
+- Matplotlib / Seaborn  
 
 ---
 
 ## 🔮 Future Work
 
-- Explore additional models (e.g., Gradient Boosting, XGBoost) for comparison.
-- Calibrate decision thresholds to further control the trade-off between false positives and false negatives.
-- Integrate the model into a real-time IoT pipeline for deployment on embedded devices.
-- Investigate feature importance and sensor selection for hardware cost optimization.
+- Compare with Gradient Boosting, XGBoost, LightGBM  
+- Threshold tuning to control FP/FN trade-offs  
+- Deploy as a real-time IoT inference system  
+- Analyze feature importance for sensor optimization
