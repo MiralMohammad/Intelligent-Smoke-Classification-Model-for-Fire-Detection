@@ -9,12 +9,14 @@ I developed this system to support smarter, more reliable fire alarms by minimiz
 
 Traditional smoke detectors trigger alarms based solely on smoke intensity, which leads to frequent false alarms in everyday situations. This reduces user trust and can delay responses to real fire events.
 
-In this project, I treat the task as a **binary classification problem**:
+In this project, I use **multi-sensor data** and **machine learning** to learn more nuanced patterns of smoke behavior.  
+
+I treated the task as a **binary classification problem**:
 
 - `Fire Alarm = 1` → fire-related smoke  
 - `Fire Alarm = 0` → nuisance / non-fire smoke  
 
-My primary objective is to **reduce false positives**, ensuring that the system triggers an alarm only when a real fire is likely.
+The main objective of this work is to **reduce false positives (false alarms)** so that the alarm is triggered only when a true fire event is likely.
 
 ---
 
