@@ -86,7 +86,8 @@ I selected this model because its **perfect precision** directly translates to *
 
 ## 🧪 Files
 
-- `Smoke_Detection_System.ipynb` — full workflow: EDA, preprocessing, modeling, tuning, evaluation
+- [Smoke_Detection_System.ipynb](Smoke_Detection_System.ipynb) — Full workflow: EDA, preprocessing, modeling, tuning, and evaluation.
+- [Fire_Smoke_Classification_Report.pdf](Report_FireSmokeDetectionSystem.pdf) — Detailed project report with methodology, results, and discussion.
 
 ---
 
