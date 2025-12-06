@@ -20,12 +20,28 @@ My primary objective is to **reduce false positives**, ensuring that the system 
 
 ## 🗂 Dataset
 
-- **Source:** Smoke Detection Dataset (Kaggle – IoT sensor-based)  
-- **Size:** ~60,000 readings (1 Hz sampling)  
-- **Target column:** `Fire Alarm`  
+- **Source:** Smoke detection dataset (Kaggle – IoT sensor-based)  
+- **Samples:** ~60,000 readings  
+- **Problem Type:** Binary classification  
+- **Target Column:** `Fire Alarm` (0 = non-fire, 1 = fire)
 
-Key features include temperature, humidity, TVOC, eCO₂, raw gas outputs (H₂, Ethanol), air pressure, and particulate matter (PM1.0).  
-The dataset covers a variety of indoor and outdoor conditions, including controlled fire scenarios and nuisance smoke environments.
+**Key features:**
+
+- `UTC`, `Timestamp` – Time information  
+- `Temperature[C]` – Air temperature  
+- `Humidity[%]` – Air humidity  
+- `TVOC[ppb]` – Total volatile organic compounds  
+- `eCO2[ppm]` – CO₂ equivalent concentration  
+- `Raw H2`, `Raw Ethanol` – Raw gas sensor outputs  
+- `Pressure[hPa]` – Air pressure  
+- `PM1.0` and related particulate measurements  
+
+The dataset includes various scenarios:
+
+- Normal indoor / outdoor environments  
+- Indoor wood and gas fires (firefighter training areas)  
+- Outdoor wood, coal, and gas grills  
+- High humidity conditions  
 
 ---
 
